@@ -33,7 +33,7 @@ resource "aws_instance" "crud-python" {
   instance_type          = var.instance_type["us"]
   vpc_security_group_ids = [aws_security_group.custom_sg.id]
   key_name               = data.aws_key_pair.created-key.key_name
-  subnet_id              = aws_subnet.public.id
+  subnet_id              = aws_subnet.public[0].id
   iam_instance_profile   = aws_iam_instance_profile.role_profile.name
   associate_public_ip_address = true
 
