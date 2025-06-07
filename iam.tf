@@ -269,7 +269,13 @@ resource "aws_iam_policy" "base_policy" {
                 "${aws_iam_role.role_adddelete.arn}",
                 "${aws_iam_role.role_admin.arn}"
             ]
-        }
+        },
+        		{
+			      "Sid": "Statement1",
+			      "Effect": "Allow",
+		      	"Action": "ssm:GetParameter",
+			      "Resource": "arn:aws:ssm:us-east-1:${var.AccountID}:parameter/deploy/github_token"
+		        }
     ]}
   )
 }
