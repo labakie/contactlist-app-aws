@@ -26,41 +26,25 @@ variable "instance_type" {
   }
 }
 
-variable "DynamoDBName" {
-  default = "ContactListTable"
-}
-
 # FOR IAM.tf
-variable "Policy_A" {
-  default = "DynamoDBReadPolicy"
+variable "PolicyName" {
+  type = map(string)
+  default = {
+    "read" = "DynamoDBReadPolicy"
+    "update" = "DynamoDBUpdatePolicy"
+    "adddelete" = "DynamoDBAddDeletePolicy"
+    "admin" = "DynamoDBAdminPolicy"
+  }
 }
 
-variable "Policy_B" {
-  default = "DynamoDBUpdatePolicy"
-}
-
-variable "Policy_C" {
-  default = "DynamoDBAddDeletePolicy"
-}
-
-variable "Policy_D" {
-  default = "DynamoDBAdminPolicy"
-}
-
-variable "Role_A" {
-  default = "DynamoDBReadRole"
-}
-
-variable "Role_B" {
-  default = "DynamoDBUpdateRole"
-}
-
-variable "Role_C" {
-  default = "DynamoDBAddDeleteRole"
-}
-
-variable "Role_D" {
-  default = "DynamoDBAdminRole"
+variable "RoleName" {
+  type = map(string)
+  default = {
+    "read" = "DynamoDBReadRole"
+    "update" = "DynamoDBUpdateRole"
+    "adddelete" = "DynamoDBAddDeleteRole"
+    "admin" = "DynamoDBAdminRole"
+  }
 }
 
 variable "IAMPolicyDesc" {
@@ -73,4 +57,8 @@ variable "IAMRoleDesc" {
 
 variable "AccountID" {
   default = "478669179634"
+}
+
+variable "DynamoDBName" {
+  default = "ContactListTable"
 }
