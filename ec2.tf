@@ -18,7 +18,7 @@ data "aws_ami" "amazon_linux_2023" {
   }
 }
 
-data "aws_key_pair" "created-key" {
+data "aws_key_pair" "created_key" {
   key_name           = "ec2-key-linux"
   include_public_key = true
 }
@@ -28,7 +28,7 @@ resource "aws_iam_instance_profile" "role_profile" {
   role = aws_iam_role.base_role.name
 }
 
-resource "aws_instance" "crud-python" {
+resource "aws_instance" "contactlist_instance" {
   ami                         = data.aws_ami.amazon_linux_2023.id
   instance_type               = var.instance_type["us"]
   vpc_security_group_ids      = [aws_security_group.custom_sg.id]
@@ -39,14 +39,14 @@ resource "aws_instance" "crud-python" {
   associate_public_ip_address = true
 
   tags = {
-    Name = "crud-python-extid"
+    Name = "Contact List Server"
   }
 }
 
-output "instance-public-ip" {
-  value = "http://${aws_instance.crud-python.public_ip}"
+output "instance_public_ip" {
+  value = "http://${aws_instance.contactlist_instance.public_ip}"
 }
 
-output "public-dns" {
-  value = aws_instance.crud-python.public_dns
+output "public_dns" {
+  value = aws_instance.contactlist_instance.public_dns
 }

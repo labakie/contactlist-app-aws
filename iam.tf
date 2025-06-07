@@ -252,50 +252,50 @@ resource "aws_iam_role_policy_attachment" "attachment_admin" {
 }
 
 resource "aws_iam_policy" "base_policy" {
-  name = "DynamoDBBasePolicy"
+  name        = "DynamoDBBasePolicy"
   description = "Base policy Terraform."
-  
+
   policy = jsonencode(
     {
-    "Version": "2012-10-17",
-    "Statement": [
+      "Version" : "2012-10-17",
+      "Statement" : [
         {
-            "Sid": "VisualEditor0",
-            "Effect": "Allow",
-            "Action": "sts:AssumeRole",
-            "Resource": [
-                "${aws_iam_role.role_read.arn}",
-                "${aws_iam_role.role_update.arn}",
-                "${aws_iam_role.role_adddelete.arn}",
-                "${aws_iam_role.role_admin.arn}"
-            ]
+          "Sid" : "VisualEditor0",
+          "Effect" : "Allow",
+          "Action" : "sts:AssumeRole",
+          "Resource" : [
+            "${aws_iam_role.role_read.arn}",
+            "${aws_iam_role.role_update.arn}",
+            "${aws_iam_role.role_adddelete.arn}",
+            "${aws_iam_role.role_admin.arn}"
+          ]
         },
-        		{
-			      "Sid": "Statement1",
-			      "Effect": "Allow",
-		      	"Action": "ssm:GetParameter",
-			      "Resource": "arn:aws:ssm:us-east-1:${var.AccountID}:parameter/deploy/github_token"
-		        }
-    ]}
+        {
+          "Sid" : "Statement1",
+          "Effect" : "Allow",
+          "Action" : "ssm:GetParameter",
+          "Resource" : "arn:aws:ssm:us-east-1:${var.AccountID}:parameter/deploy/github_token"
+        }
+    ] }
   )
 }
 
 resource "aws_iam_role" "base_role" {
-  name = "DynamoDBBaseRole"
+  name        = "DynamoDBBaseRole"
   description = "Base role Terraform."
 
   assume_role_policy = jsonencode(
     {
-    "Version": "2012-10-17",
-    "Statement": [
+      "Version" : "2012-10-17",
+      "Statement" : [
         {
-            "Effect": "Allow",
-            "Principal": {
-                "Service": "ec2.amazonaws.com"
-            },
-            "Action": "sts:AssumeRole"
+          "Effect" : "Allow",
+          "Principal" : {
+            "Service" : "ec2.amazonaws.com"
+          },
+          "Action" : "sts:AssumeRole"
         }
-    ]}
+    ] }
   )
 }
 

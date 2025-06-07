@@ -10,33 +10,33 @@ resource "aws_vpc" "custom_vpc" {
 # create two public subnets
 resource "aws_subnet" "public" {
   # using meta-argument count
-  count = length(var.public_subnet_cidr)
-  vpc_id = aws_vpc.custom_vpc.id
-  cidr_block = element(var.public_subnet_cidr, count.index)
+  count             = length(var.public_subnet_cidr)
+  vpc_id            = aws_vpc.custom_vpc.id
+  cidr_block        = element(var.public_subnet_cidr, count.index)
   availability_zone = element(var.us_zones, count.index)
 
   tags = {
     Name = "Public Subnet ${count.index + 1}"
- }
+  }
 }
 
 # create two private subnets
 resource "aws_subnet" "private" {
   # using meta-argument count
-  count = length(var.private_subnet_cidr)
-  vpc_id = aws_vpc.custom_vpc.id
-  cidr_block = element(var.private_subnet_cidr, count.index)
+  count             = length(var.private_subnet_cidr)
+  vpc_id            = aws_vpc.custom_vpc.id
+  cidr_block        = element(var.private_subnet_cidr, count.index)
   availability_zone = element(var.us_zones, count.index)
 
   tags = {
     Name = "Private Subnet ${count.index + 1}"
- }
+  }
 }
 
 # create internet gateway
 resource "aws_internet_gateway" "custom_igw" {
   vpc_id = aws_vpc.custom_vpc.id
-  
+
   tags = {
     Name = "ContactList_igw"
   }
@@ -58,8 +58,8 @@ resource "aws_route_table" "public_rt" {
 
 # associate public subnets with the route table
 resource "aws_route_table_association" "public_associate" {
-  count = length(var.public_subnet_cidr)
-  subnet_id = element(aws_subnet.public[*].id, count.index)
+  count          = length(var.public_subnet_cidr)
+  subnet_id      = element(aws_subnet.public[*].id, count.index)
   route_table_id = aws_route_table.public_rt.id
 }
 

@@ -1,23 +1,25 @@
+# for vpc.tf
 variable "public_subnet_cidr" {
-  type = list(string)
-  default = [ "10.0.1.0/24", "10.0.2.0/24" ]
+  type    = list(string)
+  default = ["10.0.1.0/24", "10.0.2.0/24"]
 }
 
 variable "private_subnet_cidr" {
-  type = list(string)
-  default = [ "10.0.3.0/24", "10.0.4.0/24" ]
+  type    = list(string)
+  default = ["10.0.3.0/24", "10.0.4.0/24"]
 }
 
 variable "us_zones" {
-  type = list(string)
-  default = [ "us-east-1a", "us-east-1b" ]
+  type    = list(string)
+  default = ["us-east-1a", "us-east-1b"]
 }
 
 variable "id_zones" {
-  type = list(string)
-  default = [ "ap-southeast-3a", "ap-southeast-3b" ]
+  type    = list(string)
+  default = ["ap-southeast-3a", "ap-southeast-3b"]
 }
 
+# for ec2.tf
 variable "instance_type" {
   type = map(string)
   default = {
@@ -26,24 +28,29 @@ variable "instance_type" {
   }
 }
 
-# FOR IAM.tf
+# for dynamodb.tf
+variable "DynamoDBName" {
+  default = "ContactListTable"
+}
+
+# for iam.tf
 variable "PolicyName" {
   type = map(string)
   default = {
-    "read" = "DynamoDBReadPolicy"
-    "update" = "DynamoDBUpdatePolicy"
+    "read"      = "DynamoDBReadPolicy"
+    "update"    = "DynamoDBUpdatePolicy"
     "adddelete" = "DynamoDBAddDeletePolicy"
-    "admin" = "DynamoDBAdminPolicy"
+    "admin"     = "DynamoDBAdminPolicy"
   }
 }
 
 variable "RoleName" {
   type = map(string)
   default = {
-    "read" = "DynamoDBReadRole"
-    "update" = "DynamoDBUpdateRole"
+    "read"      = "DynamoDBReadRole"
+    "update"    = "DynamoDBUpdateRole"
     "adddelete" = "DynamoDBAddDeleteRole"
-    "admin" = "DynamoDBAdminRole"
+    "admin"     = "DynamoDBAdminRole"
   }
 }
 
@@ -57,8 +64,4 @@ variable "IAMRoleDesc" {
 
 variable "AccountID" {
   default = "478669179634"
-}
-
-variable "DynamoDBName" {
-  default = "ContactListTable"
 }
