@@ -2,8 +2,8 @@
 data "aws_region" "current" {}
 
 # create policy
-resource "aws_iam_policy" "policy_A" {
-  name        = var.Policy_A
+resource "aws_iam_policy" "policy_read" {
+  name        = var.PolicyName["read"]
   description = var.IAMPolicyDesc
 
   policy = jsonencode(
@@ -32,8 +32,8 @@ resource "aws_iam_policy" "policy_A" {
 }
 
 # create role
-resource "aws_iam_role" "role_A" {
-  name        = var.Role_A
+resource "aws_iam_role" "role_read" {
+  name        = var.RoleName["read"]
   description = var.IAMRoleDesc
 
   assume_role_policy = jsonencode(
@@ -44,7 +44,7 @@ resource "aws_iam_role" "role_A" {
           "Sid" : "Statement1",
           "Effect" : "Allow",
           "Principal" : {
-            "AWS" : "arn:aws:iam::${var.AccountID}:role/EC2DynamoDBBaseRole-1"
+            "AWS" : "arn:aws:iam::${var.AccountID}:role/DynamoDBBaseRole"
           },
           "Action" : "sts:AssumeRole",
           "Condition" : {
@@ -57,18 +57,19 @@ resource "aws_iam_role" "role_A" {
 }
 
 # assign created policy to role
-resource "aws_iam_role_policy_attachment" "attachment_A" {
-  role       = aws_iam_role.role_A.name
-  policy_arn = aws_iam_policy.policy_A.arn
+resource "aws_iam_role_policy_attachment" "attachment_read" {
+  role       = aws_iam_role.role_read.name
+  policy_arn = aws_iam_policy.policy_read.arn
 }
 
 # create policy
-resource "aws_iam_policy" "policy_B" {
-  name        = var.Policy_B
+resource "aws_iam_policy" "policy_update" {
+  name        = var.PolicyName["update"]
   description = var.IAMPolicyDesc
 
   policy = jsonencode(
     {
+      "Version" : "2012-10-17",
       "Statement" : [
         {
           "Action" : [
@@ -88,14 +89,13 @@ resource "aws_iam_policy" "policy_B" {
           "Resource" : "*",
           "Sid" : "VisualEditor1"
         }
-      ],
-      "Version" : "2012-10-17"
+      ]
   })
 }
 
 # create role
-resource "aws_iam_role" "role_B" {
-  name        = var.Role_B
+resource "aws_iam_role" "role_update" {
+  name        = var.RoleName["update"]
   description = var.IAMRoleDesc
 
   assume_role_policy = jsonencode(
@@ -106,7 +106,7 @@ resource "aws_iam_role" "role_B" {
           "Sid" : "Statement1",
           "Effect" : "Allow",
           "Principal" : {
-            "AWS" : "arn:aws:iam::${var.AccountID}:role/EC2DynamoDBBaseRole-1"
+            "AWS" : "arn:aws:iam::${var.AccountID}:role/DynamoDBBaseRole"
           },
           "Action" : "sts:AssumeRole",
           "Condition" : {
@@ -119,14 +119,14 @@ resource "aws_iam_role" "role_B" {
 }
 
 # assign created policy to role
-resource "aws_iam_role_policy_attachment" "attachment_B" {
-  role       = aws_iam_role.role_B.name
-  policy_arn = aws_iam_policy.policy_B.arn
+resource "aws_iam_role_policy_attachment" "attachment_update" {
+  role       = aws_iam_role.role_update.name
+  policy_arn = aws_iam_policy.policy_update.arn
 }
 
 # create policy
-resource "aws_iam_policy" "policy_C" {
-  name        = var.Policy_C
+resource "aws_iam_policy" "policy_adddelete" {
+  name        = var.PolicyName["adddelete"]
   description = var.IAMPolicyDesc
 
   policy = jsonencode(
@@ -157,8 +157,8 @@ resource "aws_iam_policy" "policy_C" {
 }
 
 # create role
-resource "aws_iam_role" "role_C" {
-  name        = var.Role_C
+resource "aws_iam_role" "role_adddelete" {
+  name        = var.RoleName["adddelete"]
   description = var.IAMRoleDesc
 
   assume_role_policy = jsonencode(
@@ -169,7 +169,7 @@ resource "aws_iam_role" "role_C" {
           "Sid" : "Statement1",
           "Effect" : "Allow",
           "Principal" : {
-            "AWS" : "arn:aws:iam::${var.AccountID}:role/EC2DynamoDBBaseRole-1"
+            "AWS" : "arn:aws:iam::${var.AccountID}:role/DynamoDBBaseRole"
           },
           "Action" : "sts:AssumeRole",
           "Condition" : {
@@ -182,14 +182,14 @@ resource "aws_iam_role" "role_C" {
 }
 
 # assign created policy to role
-resource "aws_iam_role_policy_attachment" "attachment_C" {
-  role       = aws_iam_role.role_C.name
-  policy_arn = aws_iam_policy.policy_C.arn
+resource "aws_iam_role_policy_attachment" "attachment_adddelete" {
+  role       = aws_iam_role.role_adddelete.name
+  policy_arn = aws_iam_policy.policy_adddelete.arn
 }
 
 # create policy
-resource "aws_iam_policy" "policy_D" {
-  name        = var.Policy_D
+resource "aws_iam_policy" "policy_admin" {
+  name        = var.PolicyName["admin"]
   description = var.IAMPolicyDesc
 
   policy = jsonencode(
@@ -221,8 +221,8 @@ resource "aws_iam_policy" "policy_D" {
 }
 
 # create role
-resource "aws_iam_role" "role_D" {
-  name        = var.Role_D
+resource "aws_iam_role" "role_admin" {
+  name        = var.RoleName["admin"]
   description = var.IAMRoleDesc
 
   assume_role_policy = jsonencode(
@@ -233,7 +233,7 @@ resource "aws_iam_role" "role_D" {
           "Sid" : "Statement1",
           "Effect" : "Allow",
           "Principal" : {
-            "AWS" : "arn:aws:iam::${var.AccountID}:role/EC2DynamoDBBaseRole-1"
+            "AWS" : "arn:aws:iam::${var.AccountID}:role/DynamoDBBaseRole"
           },
           "Action" : "sts:AssumeRole",
           "Condition" : {
@@ -246,14 +246,14 @@ resource "aws_iam_role" "role_D" {
 }
 
 # assign created policy to role
-resource "aws_iam_role_policy_attachment" "attachment_D" {
-  role       = aws_iam_role.role_D.name
-  policy_arn = aws_iam_policy.policy_D.arn
+resource "aws_iam_role_policy_attachment" "attachment_admin" {
+  role       = aws_iam_role.role_admin.name
+  policy_arn = aws_iam_policy.policy_admin.arn
 }
 
 resource "aws_iam_policy" "base_policy" {
-  name = "basepolicy"
-  description = "base policy"
+  name = "DynamoDBBasePolicy"
+  description = "Base policy Terraform."
   
   policy = jsonencode(
     {
@@ -264,10 +264,10 @@ resource "aws_iam_policy" "base_policy" {
             "Effect": "Allow",
             "Action": "sts:AssumeRole",
             "Resource": [
-                "${aws_iam_policy.role_A.arn}",
-                "${aws_iam_policy.role_B.arn}",
-                "${aws_iam_policy.role_C.arn}",
-                "${aws_iam_policy.role_D.arn}"
+                "${aws_iam_role.role_read.arn}",
+                "${aws_iam_role.role_update.arn}",
+                "${aws_iam_role.role_adddelete.arn}",
+                "${aws_iam_role.role_admin.arn}"
             ]
         }
     ]}
@@ -275,8 +275,8 @@ resource "aws_iam_policy" "base_policy" {
 }
 
 resource "aws_iam_role" "base_role" {
-  name = "baserole"
-  description = "base role"
+  name = "DynamoDBBaseRole"
+  description = "Base role Terraform."
 
   assume_role_policy = jsonencode(
     {
