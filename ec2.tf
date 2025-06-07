@@ -58,11 +58,11 @@ data "aws_key_pair" "created-key" {
 
 resource "aws_iam_instance_profile" "role_profile" {
   name = "role_profile"
-  role = data.aws_iam_role.base_role.name
+  role = aws_iam_role.base_role.name
 }
 
 resource "aws_instance" "crud-python" {
-  ami                    = data.aws_ami.amazon-linux-2023.id
+  ami                    = data.aws_ami.amazon_linux_2023.id
   instance_type          = "t2.micro"
   vpc_security_group_ids = [aws_security_group.tf-crud-python-sg.id]
   key_name               = data.aws_key_pair.created-key.key_name

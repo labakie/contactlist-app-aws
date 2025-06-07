@@ -1,11 +1,6 @@
 # get current region
 data "aws_region" "current" {}
 
-# get EC2 base role 
-data "aws_iam_role" "base_role" {
-  name = "EC2DynamoDBBaseRole-1"
-}
-
 # create policy
 resource "aws_iam_policy" "policy_A" {
   name        = var.Policy_A
@@ -254,4 +249,51 @@ resource "aws_iam_role" "role_D" {
 resource "aws_iam_role_policy_attachment" "attachment_D" {
   role       = aws_iam_role.role_D.name
   policy_arn = aws_iam_policy.policy_D.arn
+}
+
+resource "aws_iam_policy" "base_policy" {
+  name = "basepolicy"
+  description = "base policy"
+  
+  policy = jsonencode(
+    {
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "VisualEditor0",
+            "Effect": "Allow",
+            "Action": "sts:AssumeRole",
+            "Resource": [
+                "${aws_iam_policy.role_A.arn}",
+                "${aws_iam_policy.role_B.arn}",
+                "${aws_iam_policy.role_C.arn}",
+                "${aws_iam_policy.role_D.arn}"
+            ]
+        }
+    ]}
+  )
+}
+
+resource "aws_iam_role" "base_role" {
+  name = "baserole"
+  description = "base role"
+
+  assume_role_policy = jsonencode(
+    {
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Principal": {
+                "Service": "ec2.amazonaws.com"
+            },
+            "Action": "sts:AssumeRole"
+        }
+    ]}
+  )
+}
+
+resource "aws_iam_role_policy_attachment" "base_attachment" {
+  role       = aws_iam_role.base_role.name
+  policy_arn = aws_iam_policy.base_policy.arn
 }
