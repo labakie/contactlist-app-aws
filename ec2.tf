@@ -18,15 +18,10 @@ data "aws_ami" "amazon_linux_2023" {
   }
 }
 
-# my custom VPC subnet id
-data "aws_subnet" "public_subnet" {
-  id = "subnet-0313b8e678ef43327"
-}
-
 resource "aws_security_group" "tf-crud-python-sg" {
   name        = "tf-crud-python-sg"
   description = "allow SSH-HTTP inbound traffic and all outbond traffic"
-  vpc_id      = data.aws_subnet.public_subnet.vpc_id
+  vpc_id      = aws_vpc.custom_vpc.id
 }
 
 resource "aws_vpc_security_group_ingress_rule" "allow-http" {
@@ -66,7 +61,7 @@ resource "aws_instance" "crud-python" {
   instance_type          = "t2.micro"
   vpc_security_group_ids = [aws_security_group.tf-crud-python-sg.id]
   key_name               = data.aws_key_pair.created-key.key_name
-  subnet_id              = data.aws_subnet.public_subnet.id
+  subnet_id              = aws_subnet.public.id
   iam_instance_profile   = aws_iam_instance_profile.role_profile.name
   associate_public_ip_address = true
 
