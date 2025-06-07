@@ -1,3 +1,23 @@
+data "aws_ami" "amazon_linux_2023" {
+  owners = ["amazon"]
+  most_recent = true
+
+  filter {
+    name = "name"
+    values = ["al2023-ami-*-kernel-6.1-x86_64"]
+  }
+
+  filter {
+    name   = "root-device-type"
+    values = ["ebs"]
+  }
+
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
+}
+
 # my custom VPC subnet id
 data "aws_subnet" "public_subnet" {
   id = "subnet-0313b8e678ef43327"
@@ -36,17 +56,13 @@ data "aws_key_pair" "created-key" {
   include_public_key = true
 }
 
-# data "aws_iam_role" "base_role" {
-#   name = "EC2DynamoDBBaseRole-1"
-# }
-
 resource "aws_iam_instance_profile" "role_profile" {
   name = "role_profile"
   role = data.aws_iam_role.base_role.name
 }
 
 resource "aws_instance" "crud-python" {
-  ami                    = "ami-0953476d60561c955"
+  ami                    = data.aws_ami.amazon-linux-2023.id
   instance_type          = "t2.micro"
   vpc_security_group_ids = [aws_security_group.tf-crud-python-sg.id]
   key_name               = data.aws_key_pair.created-key.key_name
