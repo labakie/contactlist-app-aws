@@ -12,7 +12,7 @@ cd /home/ec2-user
 
 # clone private git repository using PAT stored in SSM parameter store with AWS managed KMS key
 token=$(aws ssm get-parameter --name "/deploy/github_token" --with-decryption --query "Parameter.Value" --output text)
-git clone https://$token@github.com/labakie/crud-python-aws.git
+git clone --branch main https://$token@github.com/labakie/crud-python-aws.git
 
 # change the directory ownership to ec2-user 
 chown -R ec2-user:ec2-user /home/ec2-user/crud-python-aws

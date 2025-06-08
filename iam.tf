@@ -274,7 +274,7 @@ resource "aws_iam_policy" "base_policy" {
           "Sid" : "Statement1",
           "Effect" : "Allow",
           "Action" : "ssm:GetParameter",
-          "Resource" : "arn:aws:ssm:us-east-1:${var.AccountID}:parameter/deploy/github_token"
+          "Resource" : "arn:aws:ssm:${data.aws_region.current.name}:${var.AccountID}:parameter/deploy/github_token"
         }
     ] }
   )
