@@ -5,7 +5,19 @@ set -x
 
 # initial update and packages installation
 dnf update -y
-dnf install python3 git nginx -y
+dnf install python3 git nginx openssl -y
+
+# create directory for certificate and private key
+mkdir -p /etc/nginx/ssl
+
+# get the instance public ip address. not working for now, will update later
+ec2_ip=$(curl -s http://169.254.169.254/latest/meta-data/public-ipv4)
+
+# generate an ssl/tls certificate and private key
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+  -keyout /etc/nginx/ssl/selfsigned.key \
+  -out /etc/nginx/ssl/selfsigned.crt \
+  -subj "/C=ID/ST=Jakarta/L=Jakarta/O=BootcampMSI/OU=Team2/CN=$ec2_ip"
 
 # since user-data is executed by root, change from root directory to home directory 
 cd /home/ec2-user
@@ -26,10 +38,14 @@ source venv/bin/activate
 pip install -r requirements.txt
 
 # Nginx reverse proxy
+# change listen from 80 to 443, add ssl cert and key directory
 tee /etc/nginx/conf.d/flaskapp.conf > /dev/null << EOF
 server {
-    listen 80;
+    listen 443 ssl;
     # server_name yourdomain.com;
+
+    ssl_certificate /etc/nginx/ssl/selfsigned.crt;
+    ssl_certificate_key /etc/nginx/ssl/selfsigned.key;    
 
     location / {
         proxy_pass http://127.0.0.1:5000;
@@ -37,6 +53,11 @@ server {
         proxy_set_header X-Real-IP \$remote_addr;
         proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
     }
+}
+
+server {
+    listen 80;
+    return 301 https://\$host\$request_uri;
 }
 EOF
 
