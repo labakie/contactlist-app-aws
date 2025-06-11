@@ -11,13 +11,13 @@ dnf install python3 git nginx openssl -y
 mkdir -p /etc/nginx/ssl
 
 # get the instance public ip address. not working for now, will update later
-ec2_ip=$(curl -s http://169.254.169.254/latest/meta-data/public-ipv4)
+# ec2_ip=$(curl -s http://169.254.169.254/latest/meta-data/public-ipv4)
 
 # generate an ssl/tls certificate and private key
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
   -keyout /etc/nginx/ssl/selfsigned.key \
   -out /etc/nginx/ssl/selfsigned.crt \
-  -subj "/C=ID/ST=Jakarta/L=Jakarta/O=BootcampMSI/OU=Team2/CN=$ec2_ip"
+  -subj "/C=ID/ST=Jakarta/L=Jakarta/O=BootcampMSI/OU=Team2"
 
 # since user-data is executed by root, change from root directory to home directory 
 cd /home/ec2-user
