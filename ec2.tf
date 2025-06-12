@@ -51,3 +51,14 @@ resource "aws_instance" "contactlist_instance" {
 output "instance_public_ip" {
   value = "https://${aws_instance.contactlist_instance.public_ip}"
 }
+
+# create A record in cloudflare
+resource "cloudflare_dns_record" "contactlist_record" {
+  zone_id = var.cloudflare_zone_id
+  comment = "record for contact list server hosted in EC2"
+  content = aws_instance.contactlist_instance.public_ip
+  name    = "contact"
+  proxied = true
+  ttl     = 1
+  type    = "A"
+}
