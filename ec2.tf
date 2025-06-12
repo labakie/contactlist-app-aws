@@ -1,3 +1,4 @@
+# get ami id of amazon linux 2023 trough filtering
 data "aws_ami" "amazon_linux_2023" {
   owners      = ["amazon"]
   most_recent = true
@@ -18,16 +19,19 @@ data "aws_ami" "amazon_linux_2023" {
   }
 }
 
+# get created key pair trough console
 # data "aws_key_pair" "created_key" {
 #   key_name           = "ec2-key-linux"
 #   include_public_key = true
 # }
 
+# create instance profile for attach role to instance
 resource "aws_iam_instance_profile" "role_profile" {
   name = "role_profile"
   role = aws_iam_role.base_role.name
 }
 
+# create an EC2 instance
 resource "aws_instance" "contactlist_instance" {
   ami                         = data.aws_ami.amazon_linux_2023.id
   instance_type               = var.instance_type["us"]
@@ -43,6 +47,7 @@ resource "aws_instance" "contactlist_instance" {
   }
 }
 
+# print public ip value in terminal
 output "instance_public_ip" {
-  value = "http://${aws_instance.contactlist_instance.public_ip}"
+  value = "https://${aws_instance.contactlist_instance.public_ip}"
 }

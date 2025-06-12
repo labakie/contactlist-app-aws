@@ -251,6 +251,7 @@ resource "aws_iam_role_policy_attachment" "attachment_admin" {
   policy_arn = aws_iam_policy.policy_admin.arn
 }
 
+# create policy
 resource "aws_iam_policy" "base_policy" {
   name        = "DynamoDBBasePolicy"
   description = "Base policy Terraform."
@@ -280,6 +281,7 @@ resource "aws_iam_policy" "base_policy" {
   )
 }
 
+# create role
 resource "aws_iam_role" "base_role" {
   name        = "DynamoDBBaseRole"
   description = "Base role Terraform."
@@ -299,6 +301,7 @@ resource "aws_iam_role" "base_role" {
   )
 }
 
+# assign created policy to role
 resource "aws_iam_role_policy_attachment" "base_attachment" {
   role       = aws_iam_role.base_role.name
   policy_arn = aws_iam_policy.base_policy.arn
