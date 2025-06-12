@@ -65,3 +65,14 @@ variable "IAMRoleDesc" {
 variable "AccountID" {
   default = "478669179634"
 }
+
+# for cloudflare
+variable "cloudflare_api_token" {
+  type      = string
+  sensitive = true
+}
+
+variable "cloudflare_zone_id" {
+  type      = string
+  sensitive = true
+}
