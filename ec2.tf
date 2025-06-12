@@ -32,11 +32,11 @@ resource "aws_instance" "contactlist_instance" {
   ami                         = data.aws_ami.amazon_linux_2023.id
   instance_type               = var.instance_type["us"]
   vpc_security_group_ids      = [aws_security_group.custom_sg.id]
-  # key_name                    = data.aws_key_pair.created_key.key_name
   subnet_id                   = aws_subnet.public[0].id
   iam_instance_profile        = aws_iam_instance_profile.role_profile.name
   user_data                   = file("script/user-data.sh")
   associate_public_ip_address = true
+  # key_name                    = data.aws_key_pair.created_key.key_name
 
   tags = {
     Name = "Contact List Server"
@@ -45,8 +45,4 @@ resource "aws_instance" "contactlist_instance" {
 
 output "instance_public_ip" {
   value = "http://${aws_instance.contactlist_instance.public_ip}"
-}
-
-output "public_dns" {
-  value = aws_instance.contactlist_instance.public_dns
 }
