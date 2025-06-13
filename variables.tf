@@ -9,23 +9,15 @@ variable "private_subnet_cidr" {
   default = ["10.0.3.0/24", "10.0.4.0/24"]
 }
 
-variable "us_zones" {
+variable "zones" {
   type    = list(string)
   default = ["us-east-1a", "us-east-1b"]
 }
 
-variable "id_zones" {
-  type    = list(string)
-  default = ["ap-southeast-3a", "ap-southeast-3b"]
-}
-
 # for ec2.tf
 variable "instance_type" {
-  type = map(string)
-  default = {
-    "us" = "t2.micro"
-    "id" = "t3.micro"
-  }
+  type = string
+  default = "t2.micro"
 }
 
 # for dynamodb.tf
@@ -75,4 +67,16 @@ variable "cloudflare_api_token" {
 variable "cloudflare_zone_id" {
   type      = string
   sensitive = true
+}
+
+# for providers.tf
+variable "aws_region" {
+  type = string
+  default = "us-east-1"
+}
+
+# for user-data.sh and ec2.tf
+variable "git_branch" {
+  type = string
+  default = "main"
 }
