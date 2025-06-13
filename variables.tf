@@ -16,7 +16,7 @@ variable "zones" {
 
 # for ec2.tf
 variable "instance_type" {
-  type = string
+  type    = string
   default = "t2.micro"
 }
 
@@ -46,6 +46,11 @@ variable "RoleName" {
   }
 }
 
+variable "ExternalID" {
+  type      = map(string)
+  sensitive = true
+}
+
 variable "IAMPolicyDesc" {
   default = "Custom IAM policy Terraform."
 }
@@ -71,12 +76,12 @@ variable "cloudflare_zone_id" {
 
 # for providers.tf
 variable "aws_region" {
-  type = string
+  type    = string
   default = "us-east-1"
 }
 
 # for user-data.sh and ec2.tf
 variable "git_branch" {
-  type = string
+  type    = string
   default = "main"
 }
