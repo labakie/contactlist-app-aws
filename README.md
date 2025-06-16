@@ -1,32 +1,59 @@
 # ContactList Web App in AWS
-### Architecture Diagram
+
+### 📐 Architecture Diagram
+
 <img src="https://github.com/user-attachments/assets/76f8d13e-3b48-484a-844c-9b25b6efda02" width="800"/>
 
-### Overview
-This repository contains my project of the Terraform infrastructure code to deploy a simple CRUD web application for managing a contact list, created with Python Flask. Currently the web application code is placed in a private GitHub Repository and cloned using a GitHub Personal Access Token. The purpose of this project is to make me understand more about AWS services, especially EC2 as IaaS and also IAM to increase security. All services used are written in Terraform, including setting up DNS A records using Cloudflare provider. It will takes the newly created EC2 instance IPv4 address and map it to my domain, [contact.zaril.my.id](https://contact.zaril.my.id). The web application is currently inactive to prevent any costs, but this entire infrastructure can be spin up anytime.
+### 📌 Overview
+This repository contains the Terraform infrastructure code to deploy a simple CRUD web application for managing a contact list, built with Python Flask.
 
-**More details about the contact list web application:**
-- Add, read, update, and delete contacts.
-- Each action is restricted by AWS IAM Roles with fine-grained permissions (CRUD separated by IAM roles).
-- Uses secure temporary credentials that EC2 instance assumed via AWS STS:AssumeRole.
+Currently, the web application code is hosted in a private GitHub repository and is cloned to the EC2 instance using a GitHub Personal Access Token stored securely in AWS Systems Manager Parameter Store.
 
-**Role-Based Access:**
+The main goal of this project is to deepen my understanding of AWS services, especially EC2 as IaaS and IAM roles & security best practices.  
+All infrastructure is provisioned and managed using Terraform, including DNS A records created via the Cloudflare Terraform provider, which maps the EC2 instance's public IPv4 address to my custom domain: [contact.zaril.my.id](https://contact.zaril.my.id).
 
-This project demonstrates how to use AWS STS:AssumeRole with External ID to securely separate role. Each role has its own policy and can be tested via different `role=` and `extid=` query parameters in the URL. For example, here are each role and its exact URL that need to be typed in order to enter the designated page: 
+The web application is currently inactive to avoid unnecessary costs, but the entire infrastructure can be spun up at any time.
 
-1. Read Only       = `https://contact.zaril.my.id/?role=viewer&extid=readonly-123`
-2. Update User     = `https://contact.zaril.my.id/?role=updateuser&extid=update-234`
-3. Add-Delete User = `https://contact.zaril.my.id/?role=adddeleteuser&extid=adddelete-345`
-4. Admin           = `https://contact.zaril.my.id/?role=admin&extid=admin-456`
+### 🗂️ Web Application Highlights
 
-Typing only `https://contact.zaril.my.id`, wrong role parameter, or wrong External ID will only redirects to a blank page and its respective error message. 
+- Perform create, read, update, and delete operations on contacts.
+- Each action is controlled by fine-grained AWS IAM Roles (CRUD separated by roles).
+- Uses secure temporary credentials via AWS STS:AssumeRole, assumed by the EC2 instance at runtime.
 
-### Services Used
+### 🔑 Role-Based Access
 
-- **AWS EC2** — runs the Flask web app and assumes roles using a base role.
-- **AWS DynamoDB** — stores contact items (email, name, phone number).
-- **AWS IAM Policies + Roles** — secure role-based access control for EC2 to accessing DynamoDB table.
-- **AWS Systems Manager - Parameter Store** — stores a GitHub Personal Access Token to clone the web app code private repository.
-- **Cloudflare** — creates A records to map EC2 IPv4 address to a domain name.
-- **Nginx** — as HTTPS reverse proxy.
-- **OpenSSL** — creates a self-signed SSL/TLS certificate for server.
+This project demonstrates how to use AWS STS:AssumeRole with External ID to securely separate user permissions.  
+Each role has its own IAM policy and can be tested by specifying different `role=` and `extid=` query parameters in the URL.  
+Example usage for each role:
+
+1. **Read Only**: `https://contact.zaril.my.id/?role=viewer&extid=readonly-123`  
+2. **Update User**: `https://contact.zaril.my.id/?role=updateuser&extid=update-234`  
+3. **Add-Delete User**: `https://contact.zaril.my.id/?role=adddeleteuser&extid=adddelete-345`  
+4. **Admin**: `https://contact.zaril.my.id/?role=admin&extid=admin-456`
+
+Accessing the app with no parameters, the wrong role, or an incorrect external ID will result in a blank page and an appropriate error message.
+
+<table>
+  <tr>
+    <th style="text-align:center">❌ No Parameter (Error Page)</th>
+    <th style="text-align:center">✅ Admin Page</th>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="https://github.com/user-attachments/assets/aced90bc-ebeb-46ed-9162-3c2d05566473" alt="Error Page" width="800"/>
+    </td>
+    <td align="center">
+      <img src="https://github.com/user-attachments/assets/0c7dc5ce-d174-4b0e-b348-0ff33fe07d6e" alt="Admin Page" width="800"/>
+    </td>
+  </tr>
+</table>
+
+### ⚙️ Services Used
+
+- **AWS EC2** — runs the Flask web app and uses a base IAM role to assume other roles dynamically.
+- **AWS DynamoDB** — stores contact records (email, name, phone number).
+- **AWS IAM Policies & Roles** — secure role-based access from EC2 to the DynamoDB table.
+- **AWS Systems Manager Parameter Store** — securely stores a GitHub Personal Access Token to clone the private repository.
+- **Cloudflare** — manages DNS A records to map the EC2 public IP to a domain name.
+- **Nginx** — acts as an HTTPS reverse proxy for the Flask web app.
+- **OpenSSL** — generates a self-signed SSL/TLS certificate for HTTPS.
