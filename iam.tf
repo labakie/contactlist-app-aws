@@ -49,7 +49,7 @@ resource "aws_iam_role" "role_read" {
           "Action" : "sts:AssumeRole",
           "Condition" : {
             "StringEquals" : {
-              "sts:ExternalId" : "readonly-123"
+              "sts:ExternalId" : "${var.ExternalID["read"]}"
             }
           }
       }]
@@ -111,7 +111,7 @@ resource "aws_iam_role" "role_update" {
           "Action" : "sts:AssumeRole",
           "Condition" : {
             "StringEquals" : {
-              "sts:ExternalId" : "update-234"
+              "sts:ExternalId" : "${var.ExternalID["update"]}"
             }
           }
       }]
@@ -174,7 +174,7 @@ resource "aws_iam_role" "role_adddelete" {
           "Action" : "sts:AssumeRole",
           "Condition" : {
             "StringEquals" : {
-              "sts:ExternalId" : "adddelete-345"
+              "sts:ExternalId" : "${var.ExternalID["adddelete"]}"
             }
           }
       }]
@@ -238,7 +238,7 @@ resource "aws_iam_role" "role_admin" {
           "Action" : "sts:AssumeRole",
           "Condition" : {
             "StringEquals" : {
-              "sts:ExternalId" : "admin-456"
+              "sts:ExternalId" : "${var.ExternalID["admin"]}"
             }
           }
       }]
