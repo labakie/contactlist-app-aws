@@ -5,12 +5,9 @@
 <img src="https://github.com/user-attachments/assets/76f8d13e-3b48-484a-844c-9b25b6efda02" width="800"/>
 
 ### 📌 Overview
-This repository contains the Terraform infrastructure code to deploy a simple CRUD web application for managing a contact list, built with Python Flask.
+This repository contains the Terraform infrastructure code to deploy a simple CRUD web application for managing a contact list, built with Python Flask. Currently, the web application code is hosted in a private GitHub repository and is cloned to the EC2 instance using a GitHub Personal Access Token stored securely in AWS Systems Manager Parameter Store.
 
-Currently, the web application code is hosted in a private GitHub repository and is cloned to the EC2 instance using a GitHub Personal Access Token stored securely in AWS Systems Manager Parameter Store.
-
-The main goal of this project is to deepen my understanding of AWS services, especially EC2 as IaaS and IAM roles & security best practices.  
-All infrastructure is provisioned and managed using Terraform, including DNS A records created via the Cloudflare Terraform provider, which maps the EC2 instance's public IPv4 address to my custom domain: [contact.zaril.my.id](https://contact.zaril.my.id).
+The main goal of this project is to deepen my understanding of AWS services, especially EC2 as IaaS and IAM roles & security best practices. All infrastructure is provisioned and managed using Terraform, including DNS A records created via the Cloudflare Terraform provider, which maps the EC2 instance's public IPv4 address to my custom domain: [contact.zaril.my.id](https://contact.zaril.my.id).
 
 The web application is currently inactive to avoid unnecessary costs, but the entire infrastructure can be spun up at any time.
 
@@ -22,9 +19,7 @@ The web application is currently inactive to avoid unnecessary costs, but the en
 
 ### 🔑 Role-Based Access
 
-This project demonstrates how to use AWS STS:AssumeRole with External ID to securely separate user permissions.  
-Each role has its own IAM policy and can be tested by specifying different `role=` and `extid=` query parameters in the URL.  
-Example usage for each role:
+This project demonstrates how to use AWS STS:AssumeRole with External ID to securely separate user permissions. Each role has its own IAM policy and can be tested by specifying different `role=` and `extid=` query parameters in the URL. Example usage for each role:
 
 1. **Read Only**: `https://contact.zaril.my.id/?role=viewer&extid=readonly-123`  
 2. **Update User**: `https://contact.zaril.my.id/?role=updateuser&extid=update-234`  
