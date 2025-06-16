@@ -33,20 +33,13 @@ Example usage for each role:
 
 Accessing the app with no parameters, the wrong role, or an incorrect external ID will result in a blank page and an appropriate error message.
 
-<table>
-  <tr>
-    <th style="text-align:center">❌ No Parameter (Error Page)</th>
-    <th style="text-align:center">✅ Admin Page</th>
-  </tr>
-  <tr>
-    <td align="center">
-      <img src="https://github.com/user-attachments/assets/aced90bc-ebeb-46ed-9162-3c2d05566473" alt="Error Page" width="800"/>
-    </td>
-    <td align="center">
-      <img src="https://github.com/user-attachments/assets/0c7dc5ce-d174-4b0e-b348-0ff33fe07d6e" alt="Admin Page" width="800"/>
-    </td>
-  </tr>
-</table>
+#### ❌ Error Page (No Parameter)
+
+<img src="https://github.com/user-attachments/assets/aced90bc-ebeb-46ed-9162-3c2d05566473" alt="Error Page" width="700"/>
+
+#### ✅ Admin Page
+
+<img src="https://github.com/user-attachments/assets/0c7dc5ce-d174-4b0e-b348-0ff33fe07d6e" alt="Admin Page" width="700"/>
 
 ### ⚙️ Services Used
 
